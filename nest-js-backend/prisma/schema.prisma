@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int        @id @default(autoincrement())
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  email         String     @unique
+  passwordHash  String
+
+  firstName     String?
+  lastName      String?
+
+  luggages      Luggage[]
+  
+  @@map("users")
+}
+
+model Admin {
+  id            Int        @id @default(autoincrement())
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  email         String     @unique
+  passwordHash  String
+
+  firstName     String?
+  lastName      String?
+
+  role          AdminRole  
+
+  @@map("admins")
+}
+
+
+model Luggage {
+  id                  Int               @id @default(autoincrement())
+  size                Int       
+  images              String[]
+  items               String[]
+  createdAt           DateTime          @default(now())
+
+  manningStatus       ManningStatus 
+
+  user                User              @relation(fields: [userId], references: [id])
+  userId              Int
+
+  lauggageTransport   Transport @relation(fields: [lauggageTransportId], references: [id])
+  lauggageTransportId Int
+  bookingDate         DateTime          @default(now())
+
+  @@map("lagguages")
+}
+
+model Transport {
+  id          Int       @id @default(autoincrement())
+  luggages    Luggage[]  
+
+  departure   DateTime
+
+  @@map("bookings")
+}
+
+enum ManningStatus {
+  MANNED
+  UNMANNED
+}
+
+enum LuggageStatus {
+  ACCEPTED
+  REJECTED
+}
+
+enum DeliveryStatus {
+  DELIVERED
+  IN_TRANSIT 
+}
+
+enum AdminRole {
+  LUGGAGE_ATTENDANT
+}
