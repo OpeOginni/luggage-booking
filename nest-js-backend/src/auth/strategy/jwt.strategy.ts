@@ -28,5 +28,6 @@ export class JwtStrategy extends PassportStrategy(
         })
         delete user.passwordHash
         return user
+
     }
 }

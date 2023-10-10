@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateLuggageDto, UpdateLuggageDto } from './dto';
+import { CreateLuggageDto, DeleteLuggageDto, UpdateLuggageDto } from './dto';
 import { User, ManningStatus } from '@prisma/client';
 
 
@@ -23,6 +23,8 @@ export class LuggageService {
 
             const mannedStatus = dto.manned ? ManningStatus.MANNED : ManningStatus.UNMANNED;
 
+
+
             const luggage = await this.prisma.luggage.create({
                 data: {
                     userId: currentUser.id,
@@ -30,11 +32,18 @@ export class LuggageService {
                     images: dto.images,
                     items: dto.items,
                     manningStatus: mannedStatus,
-                    lauggageTransportId: dto.transportId,
                 },
             })
 
-            return { success: true, luggage };
+
+            const booking = await this.prisma.booking.create({
+                data: {
+                    transportId: dto.transportId,
+                    luggageId: luggage.id
+                }
+            })
+
+            return { success: true, luggage, booking };
 
         } catch (error) {
             throw error;
@@ -63,8 +72,7 @@ export class LuggageService {
                     size: dto.size,
                     images: dto.images,
                     items: dto.items,
-                    manningStatus: mannedStatus,
-                    lauggageTransportId: dto.transportId,
+                    manningStatus: mannedStatus
                 },
             })
 
@@ -75,5 +83,36 @@ export class LuggageService {
         }
     }
 
+    async delete(dto: DeleteLuggageDto, user: User) {
+        try {
+
+            const currentUser = await this.prisma.user.findUnique({
+                where: {
+                    id: user.id
+                }
+            })
+
+            if (!currentUser) throw new ForbiddenException('Credentials incorrect')
+
+            // Delete Booking
+            await this.prisma.booking.delete({
+                where: {
+                    luggageId: dto.luggageId
+                }
+            })
+
+            // Delete Luggage
+            await this.prisma.luggage.delete({
+                where: {
+                    id: dto.luggageId
+                }
+            })
+
+            return { success: true, };
+
+        } catch (error) {
+            throw error;
+        }
+    }
 
 }

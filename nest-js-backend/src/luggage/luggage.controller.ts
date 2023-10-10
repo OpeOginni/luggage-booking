@@ -1,11 +1,8 @@
-
-
-
-import { Body, Controller, Patch, Post, UsePipes } from '@nestjs/common';
+import { Body, Controller, Patch, Post, Req, UsePipes } from '@nestjs/common';
 
 import { ZodValidationPipe } from 'src/utils/zodValidationPipe';
 import { LuggageService } from './luggage.service';
-import { CreateLuggageDto, UpdateLuggageDto, createLuggageSchema } from './dto';
+import { CreateLuggageDto, DeleteLuggageDto, UpdateLuggageDto, createLuggageSchema, deleteLuggageSchema } from './dto';
 import { GetUser } from 'src/auth/decorator';
 import { User } from '@prisma/client';
 
@@ -24,6 +21,12 @@ export class LuggageController {
     @UsePipes(new ZodValidationPipe(createLuggageSchema))
     updateLuggage(@Body() dto: UpdateLuggageDto, @GetUser() user: User) {
         return this.luggageService.update(dto, user)
+    }
+
+    @Patch('delete')
+    @UsePipes(new ZodValidationPipe(deleteLuggageSchema))
+    deleteLuggage(@Req() dto: DeleteLuggageDto, @GetUser() user: User) {
+        return this.luggageService.delete(dto, user)
     }
 
 }

@@ -22,53 +22,56 @@ model User {
   lastName      String?
 
   luggages      Luggage[]
-  
+
+  role          AdminRole   @default(USER)
+
   @@map("users")
 }
-
-model Admin {
-  id            Int        @id @default(autoincrement())
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-
-  email         String     @unique
-  passwordHash  String
-
-  firstName     String?
-  lastName      String?
-
-  role          AdminRole  
-
-  @@map("admins")
-}
-
 
 model Luggage {
   id                  Int               @id @default(autoincrement())
   size                Int       
   images              String[]
   items               String[]
-  createdAt           DateTime          @default(now())
 
   manningStatus       ManningStatus 
 
   user                User              @relation(fields: [userId], references: [id])
   userId              Int
 
-  lauggageTransport   Transport @relation(fields: [lauggageTransportId], references: [id])
-  lauggageTransportId Int
-  bookingDate         DateTime          @default(now())
+  booking             Booking?           
 
-  @@map("lagguages")
+  @@map("luggages")
+}
+
+model Booking {
+  id             Int           @id @default(autoincrement())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+
+  luggage        Luggage       @relation(fields: [luggageId], references: [id])
+  luggageId      Int           @unique
+
+
+  transport      Transport     @relation(fields: [transportId], references: [id])
+  transportId    Int
+
+  status         BookingStatus @default(PENDING)
+
+  attendantId    Int?
+  
+  @@map("bookings")
 }
 
 model Transport {
   id          Int       @id @default(autoincrement())
-  luggages    Luggage[]  
 
   departure   DateTime
 
-  @@map("bookings")
+  bookings    Booking[]
+
+  @@map("transports")
 }
 
 enum ManningStatus {
@@ -76,8 +79,9 @@ enum ManningStatus {
   UNMANNED
 }
 
-enum LuggageStatus {
+enum BookingStatus {
   ACCEPTED
+  PENDING
   REJECTED
 }
 
@@ -87,5 +91,7 @@ enum DeliveryStatus {
 }
 
 enum AdminRole {
+  USER
+  ADMIN
   LUGGAGE_ATTENDANT
 }

@@ -20,7 +20,14 @@ export const updateLuggageSchema = z
         transportId: z.number().optional(),
     }).required()
 
+export const deleteLuggageSchema = z
+    .object({
+        luggageId: z.number(),
+    }).required()
+
 
 export type CreateLuggageDto = z.infer<typeof createLuggageSchema>;
 
 export type UpdateLuggageDto = z.infer<typeof updateLuggageSchema>;
+
+export type DeleteLuggageDto = z.infer<typeof deleteLuggageSchema>;
