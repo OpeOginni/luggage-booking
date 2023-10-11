@@ -1,7 +1,8 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateLuggageDto, DeleteLuggageDto, UpdateLuggageDto } from './dto';
-import { User, ManningStatus } from '@prisma/client';
+import { User } from '@prisma/client';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 
 @Injectable()
@@ -21,9 +22,6 @@ export class LuggageService {
 
             if (!currentUser) throw new ForbiddenException('Credentials incorrect')
 
-            const mannedStatus = dto.manned ? ManningStatus.MANNED : ManningStatus.UNMANNED;
-
-
 
             const luggage = await this.prisma.luggage.create({
                 data: {
@@ -31,7 +29,8 @@ export class LuggageService {
                     size: dto.size,
                     images: dto.images,
                     items: dto.items,
-                    manningStatus: mannedStatus,
+                    dangerousItems: dto.dangerousItems,
+                    recieverName: dto.recieverName,
                 },
             })
 
@@ -46,6 +45,11 @@ export class LuggageService {
             return { success: true, luggage, booking };
 
         } catch (error) {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2002') {
+                    throw new ForbiddenException('Credentials Taken')
+                }
+            }
             throw error;
         }
     }
@@ -62,7 +66,6 @@ export class LuggageService {
 
             if (!currentUser) throw new ForbiddenException('Credentials incorrect')
 
-            const mannedStatus = dto.manned ? ManningStatus.MANNED : ManningStatus.UNMANNED;
 
             const updatedLuggage = await this.prisma.luggage.update({
                 where: {
@@ -72,7 +75,8 @@ export class LuggageService {
                     size: dto.size,
                     images: dto.images,
                     items: dto.items,
-                    manningStatus: mannedStatus
+                    dangerousItems: dto.dangerousItems,
+                    recieverName: dto.recieverName,
                 },
             })
 

@@ -5,15 +5,20 @@ import { LuggageService } from './luggage.service';
 import { CreateLuggageDto, DeleteLuggageDto, UpdateLuggageDto, createLuggageSchema, deleteLuggageSchema } from './dto';
 import { GetUser } from 'src/auth/decorator';
 import { User } from '@prisma/client';
+import { BookingService } from 'src/booking/booking.service';
+import { CreateBookingDto } from 'src/booking/dto';
 
 
 @Controller('luggage')
 export class LuggageController {
-    constructor(private luggageService: LuggageService) { }
+    constructor(private luggageService: LuggageService, private bookingService: BookingService) { }
 
     @Post('create')
     @UsePipes(new ZodValidationPipe(createLuggageSchema))
     createLuggage(@Body() dto: CreateLuggageDto, @GetUser() user: User) {
+
+
+
         return this.luggageService.create(dto, user)
     }
 

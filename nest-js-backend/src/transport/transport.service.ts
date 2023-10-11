@@ -11,11 +11,14 @@ export class TransportService {
 
     async create(dto: CreateTransportDto) {
 
-        // save the new user in the db
         try {
             const transport = await this.prisma.transport.create({
                 data: {
                     departure: new Date(dto.departure),
+                    transportCode: dto.transportCode,
+                    transportType: dto.transportType,
+                    destination: dto.destination,
+                    maxBookingSlots: dto.maxBookingSlots,
                 },
             })
             return { success: true, transport };

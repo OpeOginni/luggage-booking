@@ -5,8 +5,9 @@ export const createLuggageSchema = z
         size: z.number().min(0.1),
         images: z.array(z.string()).optional(),
         items: z.array(z.string()),
-        manned: z.boolean(),
-        transportId: z.number()
+        transportId: z.number(),
+        dangerousItems: z.boolean(),
+        recieverName: z.string(),
     })
     .required();
 
@@ -16,8 +17,8 @@ export const updateLuggageSchema = z
         size: z.number().min(0.1).optional(),
         images: z.array(z.string()).optional(),
         items: z.array(z.string()).optional(),
-        manned: z.boolean().optional(),
-        transportId: z.number().optional(),
+        dangerousItems: z.boolean().optional(),
+        recieverName: z.string().optional(), transportId: z.number().optional(),
     }).required()
 
 export const deleteLuggageSchema = z
