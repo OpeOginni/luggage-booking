@@ -32,7 +32,12 @@ export class BookingService {
     async getAllBookings() {
         try {
 
-            const bookings = await this.prisma.booking.findMany({})
+            const bookings = await this.prisma.booking.findMany({
+                include: {
+                    luggage: true,
+                    transport: true,
+                },
+            })
 
             return bookings;
         } catch (error) {
