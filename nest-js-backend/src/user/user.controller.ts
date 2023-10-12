@@ -6,6 +6,7 @@ import { JwtGuard } from 'src/auth/guard';
 import { UserService } from './user.service';
 import { ZodValidationPipe } from 'src/utils/zodValidationPipe';
 import { UpdateUserDto, updateUserSchema } from './dto';
+import { userSchema } from 'prisma/prisma.dto';
 
 @UseGuards(JwtGuard)
 @Controller('users')
@@ -18,7 +19,7 @@ export class UserController {
     }
 
     @Patch()
-    @UsePipes(new ZodValidationPipe(updateUserSchema))
+    @UsePipes(new ZodValidationPipe({ body: updateUserSchema, custom: userSchema }))
     editUser(@Body() dto: UpdateUserDto, @GetUser() user: User) {
         return this.userService.update(dto, user)
     }

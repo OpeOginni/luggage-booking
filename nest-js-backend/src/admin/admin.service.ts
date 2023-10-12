@@ -1,6 +1,6 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import * as argon from 'argon2'
-import { CreateSuperRoleDto } from './dto/admin.dto';
+import { CreateSuperRoleDto, GetAllUsersDto, GetUserDto } from './dto/admin.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Role } from 'src/auth/enums';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -59,6 +59,61 @@ export class AdminService {
                 }
             }
             throw error;
+        }
+    }
+
+    async getUser(dto: GetUserDto) {
+        try {
+
+            // This takes the function if the role requested is a Personnel, Admin or Attendant
+            const user = await this.prisma.user.findUnique({
+                where: {
+                    id: dto.userId
+                }
+            })
+
+            if (!user) throw new BadRequestException('Incorrect Credential')
+
+            return user
+        } catch (error) {
+            console.log(error)
+
+            return error
+        }
+    }
+
+    async getAllUsersWithRole(dto: GetAllUsersDto) {
+        try {
+
+            // dto.role
+
+            // This takes the function if the role requested is a Personnel, Admin or Attendant
+            const users = await this.prisma.user.findMany({
+                where: {
+                    role: dto.role
+                }
+            })
+
+            return users
+        } catch (error) {
+
+            console.log(error)
+            return error
+        }
+    }
+
+
+    async getAllUsers() {
+        try {
+            const users = await this.prisma.user.findMany({})
+
+            return users
+
+
+        } catch (error) {
+
+            console.log(error)
+            return error
         }
     }
 }

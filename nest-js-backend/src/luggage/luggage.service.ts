@@ -38,7 +38,8 @@ export class LuggageService {
             const booking = await this.prisma.booking.create({
                 data: {
                     transportId: dto.transportId,
-                    luggageId: luggage.id
+                    luggageId: luggage.id,
+                    userId: currentUser.id
                 }
             })
 

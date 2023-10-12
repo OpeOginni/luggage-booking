@@ -1,15 +1,15 @@
 import { z } from 'zod';
 
+
 export const createLuggageSchema = z
     .object({
-        size: z.number().min(0.1),
-        images: z.array(z.string()).optional(),
-        items: z.array(z.string()),
+        size: z.number(),
+        images: z.string().array().optional(),
+        items: z.string().array(),
         transportId: z.number(),
         dangerousItems: z.boolean(),
         recieverName: z.string(),
     })
-    .required();
 
 export const updateLuggageSchema = z
     .object({

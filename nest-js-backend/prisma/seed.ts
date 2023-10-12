@@ -20,7 +20,6 @@ export async function createRandomTransport() {
     return {
         departure: faker.date.future(),
         transportCode: faker.string.alphanumeric(7),
-        email: faker.internet.email(),
         transportType: faker.helpers.arrayElement(transportTypes),
         destination: `${faker.location.city()} - ${faker.location.city()}`,
         maxBookingSlots: faker.number.int({ min: 1, max: 100 }),
@@ -30,17 +29,7 @@ export async function createRandomTransport() {
 export async function main() {
 
 
-    const prisma = new PrismaClient({
-    })
-
-
-    // const prisma = new PrismaClient({
-    //     datasources: {
-    //         db: {
-    //             url: process.env.DATABASE_URL,
-    //         },
-    //     },
-    // });
+    const prisma = new PrismaClient({})
 
     try {
 
@@ -97,6 +86,17 @@ export async function main() {
                 data: userData
             })
         }
+
+        // Create Trasports
+
+        for (let i = 0; i < 5; i++) {
+            const transportData = await createRandomTransport()
+
+            await prisma.transport.create({
+                data: transportData
+            })
+        }
+
 
         console.log("Seeded")
 
