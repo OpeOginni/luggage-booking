@@ -22,14 +22,14 @@ export class BookingController {
     }
 
     @Roles(Role.LUGGAGE_ATTENDANT, Role.ADMIN)
-    @Patch('approve-booking/:bookingId')
+    @Get('approve-booking/:bookingId')
     @UsePipes(new ZodValidationPipe({ custom: userSchema }))
     approveBooking(@Param('bookingId', ParseIntPipe,) bookingId: number, @GetUser() attendant: User) {
         return this.bookingService.approveBooking(bookingId, attendant)
     }
 
     @Roles(Role.LUGGAGE_ATTENDANT, Role.ADMIN)
-    @Patch('reject-booking/:bookingId')
+    @Get('reject-booking/:bookingId')
     @UsePipes(new ZodValidationPipe({ custom: userSchema }))
     rejectBooking(@Param('bookingId', ParseIntPipe,) bookingId: number, @GetUser() attendant: User) {
         return this.bookingService.rejectBooking(bookingId, attendant)

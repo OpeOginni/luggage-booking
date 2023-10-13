@@ -13,6 +13,7 @@ import { RolesGuard } from './auth/guard/roles.guard';
 import { JwtGuard } from './auth/guard';
 import { BookingModule } from './booking/booking.module';
 import { AdminModule } from './admin/admin.module';
+import { HealthCheckModule } from './health-check/health-check.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { AdminModule } from './admin/admin.module';
     LuggageModule,
     TransportModule,
     BookingModule,
-    AdminModule
+    AdminModule,
+    HealthCheckModule
   ]
 })
 export class AppModule { }
