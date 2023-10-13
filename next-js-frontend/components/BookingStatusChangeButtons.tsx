@@ -23,7 +23,7 @@ export function BookingStatusButtons(props: { bookingId: number }) {
   async function handleApprove() {
     setAcceptButtonLoading(true);
     try {
-      const response = await api.patch(
+      const response = await api.get(
         `/bookings/approve-booking/${props.bookingId}`,
         {
           headers: {
