@@ -68,7 +68,7 @@ export async function main() {
 
         // Create Users
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 15; i++) {
             const userData = await createRandomUser(Role.USER);
 
             await prisma.user.create({
@@ -86,7 +86,7 @@ export async function main() {
             })
         }
 
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 9; i++) {
             const { luggage, booking } = await createRandomLuggageAndBooking(i + 1)
 
             await prisma.luggage.create({
