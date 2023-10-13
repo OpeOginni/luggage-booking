@@ -33,4 +33,3 @@ export function generateCustomCode(): string {
 
 // Example: Generate a custom code with 9 alphanumeric characters and 2 dashes
 const customCode = generateCustomCode();
-console.log(customCode);
