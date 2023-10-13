@@ -59,9 +59,10 @@ export async function main() {
 
         // Clean DB
         await prisma.$transaction([
-            prisma.transport.deleteMany(),
             prisma.booking.deleteMany(),
-            prisma.user.deleteMany()
+            prisma.luggage.deleteMany(),
+            prisma.user.deleteMany(),
+            prisma.transport.deleteMany(),
         ]);
 
         console.log("DB CLEANED")
@@ -86,9 +87,10 @@ export async function main() {
             })
         }
 
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < 10; i++) {
             const { luggage, booking } = await createRandomLuggageAndBooking(i + 1)
 
+            console.log(i)
             await prisma.luggage.create({
                 data: luggage
             })
