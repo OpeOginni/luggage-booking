@@ -25,7 +25,6 @@ export default async function DashboardPage() {
     redirect(`/`); // Navigate to new route
   }
 
-  console.log(user);
   //   if (user.role !== "ADMIN") {
   //     redirect("/luggage");
   //   }

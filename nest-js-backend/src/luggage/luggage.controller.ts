@@ -19,7 +19,6 @@ export class LuggageController {
     @Post('create')
     @UsePipes(new ZodValidationPipe({ body: createLuggageSchema, custom: userSchema }))
     createLuggage(@Body() dto: CreateLuggageDto, @GetUser() user: User,) {
-        console.log(user)
 
         return this.luggageService.create(dto, user)
     }

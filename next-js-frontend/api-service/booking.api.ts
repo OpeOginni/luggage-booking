@@ -40,7 +40,6 @@ export const approveBooking = async (accessToken: string, bookingId: number) => 
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        console.log(response.data)
         return response.data;
     } catch (error) {
         throw error;
@@ -54,7 +53,6 @@ export const rejectBooking = async (accessToken: string, bookingId: number) => {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        console.log(response.data)
         return response.data;
     } catch (error) {
         throw error;
