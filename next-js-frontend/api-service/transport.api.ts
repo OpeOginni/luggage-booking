@@ -7,22 +7,9 @@ const api = axios.create({
     baseURL: baseUrl,
 });
 
-export const getBookings = async (accessToken: string) => {
+export const getTransports = async (accessToken: string) => {
     try {
-        const response = await api.get('/bookings', {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-};
-
-export const getUserBookings = async (accessToken: string) => {
-    try {
-        const response = await api.get('/bookings/me', {
+        const response = await api.get('/transport', {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
