@@ -55,11 +55,9 @@ async function CreateBookingForm() {
 
       if (response.success === true) {
         redirect("/dashboard");
-      } else {
-        alert("There was an Error");
       }
     } catch (e) {
-      alert("There was an Error");
+      console.log(e);
     }
   }
 
