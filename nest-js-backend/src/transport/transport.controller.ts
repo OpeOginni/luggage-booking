@@ -23,13 +23,13 @@ export class TransportController {
         return this.transportService.create(dto)
     }
 
-    @Roles(Role.LUGGAGE_ATTENDANT, Role.ADMIN, Role.CHECK_IN_PERSONNEL)
+    @Roles(Role.LUGGAGE_ATTENDANT, Role.ADMIN, Role.CHECK_IN_PERSONNEL, Role.USER)
     @Get()
     getAllTransports() {
         return this.transportService.getAllTransports()
     }
 
-    @Roles(Role.LUGGAGE_ATTENDANT, Role.ADMIN, Role.CHECK_IN_PERSONNEL)
+    @Roles(Role.LUGGAGE_ATTENDANT, Role.ADMIN, Role.CHECK_IN_PERSONNEL, Role.USER)
     @Get(':transportId')
     getBooking(@Param('transportId', ParseIntPipe,) transportId: number) {
 

@@ -28,8 +28,9 @@ export default async function Home() {
       </div>
       <div className="mt-4 text-center">
         <p className="text-sm text-gray-600">
-          Note: Use the following credentials for testing - Admin Email:
-          admin@gmail.com, Password: 123456
+          Note: Use the following credentials for testing <br></br>- Admin
+          Email: admin@gmail.com, Password: 123456 <br></br>- User Email:
+          Clare29@fakemail.com, Password: password
         </p>
       </div>
     </main>
@@ -46,7 +47,6 @@ async function LoginForm() {
       password: z.string(),
     });
 
-
     const parsed = schema.parse({
       email: formData.get("email"),
       password: formData.get("password"),
@@ -58,7 +58,6 @@ async function LoginForm() {
     }
 
     cookies().set("access_token", access_token);
-
 
     // mutate data
     // revalidate cache

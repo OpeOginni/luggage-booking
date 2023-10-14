@@ -16,30 +16,11 @@ import {
 } from "@/components/ui/table";
 
 import { Booking } from "@/utils/interfaces";
-import {
-  ApproveBookingButton,
-  BookingStatusButtons,
-  RejectBookingButton,
-} from "./BookingStatusChangeButtons";
 
-export function BookingComponent(props: { bookings: Booking[] }) {
+export function UserBookingsComponent(props: { bookings: Booking[] }) {
   if (props.bookings.length === 0) {
     return <p>No bookings available.</p>;
   }
-
-  const labels = [
-    "Departure",
-    "Destination",
-    "Transport Type",
-    "Size",
-    "Dangerous Items",
-
-    "Recipient Name",
-    "Time Booked",
-    "Status",
-
-    "Verification Code",
-  ];
 
   return (
     <Table>
@@ -54,8 +35,6 @@ export function BookingComponent(props: { bookings: Booking[] }) {
           <TableHead>Status</TableHead>
           <TableHead>Recipient Name</TableHead>
           <TableHead>Verification Code</TableHead>
-          <TableHead>Approve</TableHead>
-          <TableHead>Reject</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -93,35 +72,8 @@ export function BookingComponent(props: { bookings: Booking[] }) {
                 <p>- - -</p>
               )}
             </TableCell>
-
-            <TableCell>
-              {booking.status === "PENDING" ? (
-                <ApproveBookingButton bookingId={booking.id} />
-              ) : (
-                <p>ALREADY {booking.status}</p>
-              )}
-            </TableCell>
-            <TableCell>
-              {booking.status === "PENDING" ? (
-                <RejectBookingButton bookingId={booking.id} />
-              ) : (
-                <p>ALREADY {booking.status}</p>
-              )}
-            </TableCell>
           </TableRow>
         ))}
-
-        {/* <Accordion key={booking.id} type="single" collapsible>
-<AccordionItem value="item-1">
-  <AccordionTrigger>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="w-1/4 flex gap-2">
-                  <BookingStatusButtons bookingId={booking.id} />
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion> */}
       </TableBody>
     </Table>
   );

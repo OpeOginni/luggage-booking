@@ -9,6 +9,8 @@ import { redirect } from "next/navigation";
 import { getBookings } from "@/api-service/booking.api";
 import { Booking } from "@/utils/interfaces";
 import { BookingComponent } from "@/components/BookingsComponent";
+import { AdminDashboardComponent } from "@/components/AdminDashboard";
+import { UserDashboard } from "@/components/UserDashboard";
 
 export default async function DashboardPage() {
   const access_token = cookies().get("access_token")?.value;
@@ -27,17 +29,29 @@ export default async function DashboardPage() {
   //     redirect("/luggage");
   //   }
 
-  const bookings: Booking[] = await getBookings(access_token);
+  if (user.role === "USER") {
+    return (
+      <main className="flex flex-col items-center justify-center min-h-screen p-24">
+        <div className="text-2xl font-bold mb-8">
+          <p>Welcome to the USER Dashboard</p>
+        </div>
+
+        <div className="w-[90%] flex items-center justify-center">
+          <UserDashboard accessToken={access_token} />
+        </div>
+        <LogOutForm />
+      </main>
+    );
+  }
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-24">
       <div className="text-2xl font-bold mb-8">
-        <p>Welcome to the Dashboard</p>
-        <p className="text-lg text-center">Here are Current Bookings</p>
+        <p>Welcome to the ADMIN Dashboard</p>
       </div>
 
-      <div className="w-[90%] ">
-        <BookingComponent bookings={bookings} />
+      <div className="w-[90%] flex items-center justify-center">
+        <AdminDashboardComponent accessToken={access_token} />
       </div>
       <LogOutForm />
     </main>
