@@ -8,10 +8,10 @@ async function bootstrap() {
   app.enableCors();
 
   // RAILWAY CONFIG
-  await app.listen(port, "0.0.0.0");
+  // await app.listen(port, "0.0.0.0");
 
   // DEV CONGIG
-  // await app.listen(port);
+  await app.listen(port);
 
 }
 bootstrap();
