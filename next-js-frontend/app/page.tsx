@@ -4,8 +4,10 @@ import Image from "next/image";
 import { cookies } from "next/headers";
 import { FormEvent } from "react";
 import { authenticatedRequest, loginUser } from "@/api-service/auth.api";
-import { z } from "zod";
 import { redirect } from "next/navigation";
+import { LoginForm } from "@/components/LoginForm";
+import { handleLogin } from "@/server-functions/auth.functions";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export default async function Home() {
   const access_token = cookies().get("access_token")?.value;
@@ -34,58 +36,5 @@ export default async function Home() {
         </p>
       </div>
     </main>
-  );
-}
-
-async function LoginForm() {
-  "use server";
-
-  async function handleLogin(formData: FormData) {
-    "use server";
-    const schema = z.object({
-      email: z.string().email(),
-      password: z.string(),
-    });
-
-    const parsed = schema.parse({
-      email: formData.get("email"),
-      password: formData.get("password"),
-    });
-    const access_token = await loginUser(parsed.email, parsed.password);
-
-    if (!access_token) {
-      throw new Error("Invalid credentials");
-    }
-
-    cookies().set("access_token", access_token);
-
-    // mutate data
-    // revalidate cache
-  }
-
-  return (
-    <form
-      action={handleLogin}
-      className="flex flex-col gap-4 p-4 shadow-md rounded-lg"
-    >
-      <div>
-        <Label htmlFor="email" className="font-bold py-3">
-          Email
-        </Label>
-        <Input name="email" id="email" type="email" />
-      </div>
-      <div>
-        <Label htmlFor="password" className="font-bold py-3">
-          Password
-        </Label>
-        <Input name="password" id="password" type="password" />
-      </div>
-      <button
-        type="submit"
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        Sign In
-      </button>
-    </form>
   );
 }

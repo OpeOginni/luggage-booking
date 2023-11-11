@@ -1,0 +1,25 @@
+tasks:
+  - name: postgres
+    before: |
+      curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
+      echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" |sudo tee  /etc/apt/sources.list.d/pgdg.list
+      sudo apt update
+      sudo apt install -y postgresql-client-13 libpq-dev
+  - name: next-js
+    command: |
+      ruby $THEIA_WORKSPACE_ROOT/bin/frontend/generate-env
+      cd next-js-backend
+      npm i 
+  - name: nest-js 
+    command: |
+      ruby $THEIA_WORKSPACE_ROOT/bin/backend/generate-env
+      cd nest-js-backend
+      yarn add
+ports:
+  - name: frontend
+    port: 3000
+    onOpen: open-browser
+    visibility: public
+  - name: backend
+    port: 3333
+    visibility: public

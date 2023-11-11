@@ -1,0 +1,69 @@
+version: "3.8"
+services:
+  nest-js-backend:
+    env_file:
+      - nest-js-backend.env
+    build: ./nest-js-backend
+    ports:
+      - "3333:3333"
+    networks:
+      - net
+    volumes:
+      - ./nest-js-backend:/nest-js-backend
+      # Running HealthCheck for Backend Container
+      # Had to curl a route that I am sure will return a value to use as the healthcheck
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}/health-check",
+        ]
+      interval: 10m
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+  next-js-frontend:
+    env_file:
+      - next-js-frontend.env
+    build: ./next-js-frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - net
+    volumes:
+      - ./next-js-frontend:/next-js-frontend
+      # Running HealthCheck for Frontend Container
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}",
+        ]
+      interval: 10m
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+  db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    networks:
+      - net
+    volumes:
+      - db:/var/lib/postgresql/data
+networks:
+  net:
+    driver: bridge
+    name: net
+
+volumes:
+  db:
+    driver: local

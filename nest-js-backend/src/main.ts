@@ -7,11 +7,17 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
 
-  // RAILWAY CONFIG
-  await app.listen(port, "0.0.0.0");
+  if(!process.env.PORT) {
+    // DEV CONGIG
+    await app.listen(port);
+  } else {
+    // RAILWAY CONFIG
+    await app.listen(port, "0.0.0.0");
+  }
 
-  // DEV CONGIG
-  // await app.listen(port);
+
+
+
 
 }
 bootstrap();
