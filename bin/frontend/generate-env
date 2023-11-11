@@ -6,4 +6,4 @@ template = File.read 'erb/next-js-frontend.env.erb'
 content = ERB.new(template).result(binding)
 filename = 'next-js-frontend.env'
 
-File.write(filename, content)
+File.write('next-js-frontend/.env', content)
