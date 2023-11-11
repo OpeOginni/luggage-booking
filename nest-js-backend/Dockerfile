@@ -20,4 +20,4 @@ RUN yarn run build
 EXPOSE 3333
 
 # Start the server using the production build
-CMD ["yarn", "run", "start:dev"]
+CMD ["yarn", "run", "start:prod"]
