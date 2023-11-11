@@ -18,7 +18,7 @@ services:
           "CMD",
           "curl",
           "-f",
-          "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}/health-check",
+          "https://3333-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}/health-check",
         ]
       interval: 10m
       timeout: 10s

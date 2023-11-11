@@ -8,7 +8,7 @@ WORKDIR /nest-js-backend
 COPY package*.json ./
 
 # Install app dependencies
-RUN yarn add
+RUN yarn
 
 # Bundle app source
 COPY . .
