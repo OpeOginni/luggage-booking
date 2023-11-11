@@ -7,3 +7,9 @@ content = ERB.new(template).result(binding)
 filename = 'nest-js-backend.env'
 
 File.write(filename, content)
+
+template = File.read 'erb/nest-js-backend.env.erb'
+content = ERB.new(template).result(binding)
+filename = '/nest-js-backend/.env'
+
+File.write(filename, content)
