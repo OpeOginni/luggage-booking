@@ -12,6 +12,7 @@ export const loginUser = async (email: string, password: string) => {
         const response = await api.post('/auth/signin', { email, password });
         return response.data.access_token;
     } catch (error) {
+        console.log(error);
         throw error;
     }
 };

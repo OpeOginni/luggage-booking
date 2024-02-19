@@ -1,3 +1,7 @@
+import axios from "axios";
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+
 import {
   Accordion,
   AccordionContent,
@@ -16,13 +20,12 @@ import {
 } from "@/components/ui/table";
 
 import { Booking } from "@/utils/interfaces";
-import {
-  ApproveBookingButton,
-  BookingStatusButtons,
-  RejectBookingButton,
-} from "./BookingStatusChangeButtons";
+// import {
+//   ApproveBookingButton,
+//   RejectBookingButton,
+// } from "./BookingStatusChangeButtons.server";
 
-export function BookingComponent(props: { bookings: Booking[] }) {
+export async function BookingComponent(props: { bookings: Booking[] }) {
   if (props.bookings.length === 0) {
     return <p>No bookings available.</p>;
   }
@@ -98,14 +101,14 @@ export function BookingComponent(props: { bookings: Booking[] }) {
               {booking.status === "PENDING" ? (
                 <ApproveBookingButton bookingId={booking.id} />
               ) : (
-                <p>ALREADY {booking.status}</p>
+                <p> {booking.status}</p>
               )}
             </TableCell>
             <TableCell>
               {booking.status === "PENDING" ? (
                 <RejectBookingButton bookingId={booking.id} />
               ) : (
-                <p>ALREADY {booking.status}</p>
+                <p> {booking.status}</p>
               )}
             </TableCell>
           </TableRow>
@@ -124,5 +127,89 @@ export function BookingComponent(props: { bookings: Booking[] }) {
           </Accordion> */}
       </TableBody>
     </Table>
+  );
+}
+
+function ApproveBookingButton(props: { bookingId: number }) {
+  async function approve() {
+    "use server";
+
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const api = axios.create({
+      baseURL: baseUrl,
+    });
+
+    try {
+      const response = await api.get(
+        `/bookings/approve-booking/${props.bookingId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookies().get("access_token")?.value}`,
+            withCredentials: true, // Add this line
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        revalidatePath("/admin/dashboard");
+      } else {
+        throw new Error();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return (
+    <form>
+      <button
+        formAction={approve}
+        className="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded"
+      >
+        Approve
+      </button>
+    </form>
+  );
+}
+
+function RejectBookingButton(props: { bookingId: number }) {
+  async function reject() {
+    "use server";
+
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const api = axios.create({
+      baseURL: baseUrl,
+    });
+
+    try {
+      const response = await api.get(
+        `/bookings/reject-booking/${props.bookingId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookies().get("access_token")?.value}`,
+            withCredentials: true, // Add this line
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        revalidatePath("/admin/dashboard");
+      } else {
+        throw new Error();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return (
+    <form>
+      <button
+        formAction={reject}
+        className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
+      >
+        Reject
+      </button>
+    </form>
   );
 }

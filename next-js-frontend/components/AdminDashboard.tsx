@@ -1,3 +1,5 @@
+"use server";
+
 import { Booking, Transport } from "@/utils/interfaces";
 import { BookingComponent } from "./BookingsComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

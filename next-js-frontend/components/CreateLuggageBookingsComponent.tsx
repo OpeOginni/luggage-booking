@@ -8,6 +8,7 @@ import { z } from "zod";
 import { redirect } from "next/navigation";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { createLuggage } from "@/api-service/luggage.api";
+import { revalidatePath } from "next/cache";
 
 export default async function CreateBookingComponent() {
   return <CreateBookingForm />;
@@ -51,10 +52,8 @@ async function CreateBookingForm() {
         access_token
       );
 
-      console.log(response);
-
       if (response.success === true) {
-        redirect("/dashboard");
+        revalidatePath("/dashboard");
       }
     } catch (e) {
       console.log(e);

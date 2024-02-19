@@ -12,18 +12,18 @@ services:
       - ./nest-js-backend:/nest-js-backend
       # Running HealthCheck for Backend Container
       # Had to curl a route that I am sure will return a value to use as the healthcheck
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "curl",
-          "-f",
-          "https://3333-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}/health-check",
-        ]
-      interval: 10m
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+    # healthcheck:
+    #   test:
+    #     [
+    #       "CMD",
+    #       "curl",
+    #       "-f",
+    #       "https://3333-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}/health-check",
+    #     ]
+    #   interval: 10m
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 40s
   next-js-frontend:
     env_file:
       - next-js-frontend.env
@@ -34,19 +34,19 @@ services:
       - net
     volumes:
       - ./next-js-frontend:/next-js-frontend
-      # Running HealthCheck for Frontend Container
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "curl",
-          "-f",
-          "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}",
-        ]
-      interval: 10m
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+    #   # Running HealthCheck for Frontend Container
+    # healthcheck:
+    #   test:
+    #     [
+    #       "CMD",
+    #       "curl",
+    #       "-f",
+    #       "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}",
+    #     ]
+    #   interval: 10m
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 40s
   db:
     image: postgres:13-alpine
     restart: always
