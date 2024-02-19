@@ -1,4 +1,6 @@
-
+export interface User {
+    role: "USER" | "ADMIN" | "LUGGAGE_ATTENDANT" | "CHECK_IN_PERSONNEL";
+}
 
 export interface Luggage {
     id: number;
